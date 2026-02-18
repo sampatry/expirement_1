@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>navigation_pkg</name>
+  <version>0.0.1</version>
+  <description>Navigation package for TurtleBot3 in a custom Gazebo world</description>
+
+  <maintainer email="sampatry8@gmail.com">Sam</maintainer>
+  <license>MIT</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+    <!-- <build_depend>gazebo_ros</build_depend> -->
+    <build_depend>robot_state_publisher</build_depend>
+    <build_depend>urdf</build_depend>
+
+    <!-- <exec_depend>gazebo_ros</exec_depend> -->
+    <exec_depend>robot_state_publisher</exec_depend>
+    <exec_depend>urdf</exec_depend>
+
+    <!-- Optional: for launch files -->
+    <exec_depend>launch</exec_depend>
+    <exec_depend>launch_ros</exec_depend>
+
+    <!-- From git package example -->
+    <exec_depend>rclpy</exec_depend>
+    <exec_depend>geometry_msgs</exec_depend>
+    <exec_depend>nav2_msgs</exec_depend>
+    <exec_depend>action_msgs</exec_depend>
+    <exec_depend>lifecycle_msgs</exec_depend>
+
+    <test_depend>ament_copyright</test_depend>
+    <test_depend>ament_flake8</test_depend>
+    <test_depend>ament_pep257</test_depend>
+    <test_depend>python3-pytest</test_depend>
+
+    <!-- From youtube vid -->
+    <buildtool_depend>ament_cmake_python</buildtool_depend>
+    <depend>rclcpp</depend>
+
+    <!-- For occupancy updater -->
+    <exec_depend>sensor_msgs</exec_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
