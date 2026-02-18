@@ -15,16 +15,16 @@ To build;
 
 `rm -rf build/ install/ log/ #(optional for clean build)`
 `cd ~/Expirement_1`
-`colcon build`
+`cd ~/expirement_1 && colcon build --symlink-install`
 `source ~/.bashrc`
 
 To start turtlebot on rasberrypi run this:
 `ros2 launch turtlebot3_bringup robot.launch.py`
 
 To start the turblebot in gazebo the experiment 1 map only:
-`ros2 launch turtlebot3_gazebo turtlebot3_epirement1.launch.py`
-
-To start turtlebot in gazebo with nav2 run:
+`ros2 launch simulation_pkg custom_world.launch.py`
+C
+To start turtlebot navigation with nav2 run:
 `ros2 launch navigation_pkg navigation_sim.launch.py`
 
 To run scripts run:
