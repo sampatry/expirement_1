@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<sdf version="1.6">
+  <model name="my_map">
+    <static>true</static>
+    <link name="map_link">
+
+      <visual name="map_visual">
+        <geometry>
+          <mesh>
+            <uri>model://turtlebot3_expirement1/meshes/expirement1map.stl</uri>
+            <scale>0.001 0.001 0.001</scale>  <!-- Scaled down from solidworks -->
+          </mesh>
+        </geometry>
+      </visual>
+
+      <collision name="map_collision">
+        <geometry>
+          <mesh>
+            <uri>model://turtlebot3_expirement1/meshes/expirement1map.stl</uri>
+            <scale>0.001 0.001 0.001</scale>
+          </mesh>
+        </geometry>
+      </collision>
+
+    </link>
+  </model>
+</sdf>
