@@ -9,10 +9,17 @@ def generate_launch_description():
     map_file = os.path.join(config_dir, 'my_map.yaml')
 
     nav2_launch = os.path.join(
-        get_package_share_directory('turtlebot3_navigation2'), 'launch', 'navigation2.launch.py'
+        get_package_share_directory('turtlebot3_manipulation_navigation2'), 'launch', 'gazebo.launch.py'
+    )
+
+    sim_launch = os.path.join(
+        get_package_share_directory('simulation_pkg'), 'launch', 'custom_world.launch.py'
     )
 
     return LaunchDescription([
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(sim_launch)
+        ),
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(nav2_launch),
             launch_arguments={

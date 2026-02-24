@@ -7,7 +7,7 @@ find_package(robot_state_publisher REQUIRED)
 
 find_package(turtlebot3_description REQUIRED)
 
-install(DIRECTORY launch urdf worlds models
+install(DIRECTORY launch worlds models
   DESTINATION share/${PROJECT_NAME})
 
 

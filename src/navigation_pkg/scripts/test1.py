@@ -7,12 +7,6 @@ from nav2_simple_commander.robot_navigator import BasicNavigator, TaskResult
 import rclpy
 from launch.actions import TimerAction
 
-"""
-Basic stock inspection demo. In this demonstration, the expectation
-is that there are cameras or RFID sensors mounted on the robots
-collecting information about stock quantity and location.
-"""
-
 
 def main() -> None:
     rclpy.init()
@@ -20,12 +14,12 @@ def main() -> None:
     navigator = BasicNavigator()
 
     inspection_route = [
-        [0.5, 0.3],
-        [2.0, 1.0],
+        # [0.5, 0.3],
+        # [2.0, 1.0],
         [3.0, 0.3],
     ]
 
-    # Set our demo's initial pose
+    # Set initial pose
     initial_pose = PoseStamped()
     initial_pose.header.frame_id = 'map'
     initial_pose.header.stamp = navigator.get_clock().now().to_msg()
@@ -75,10 +69,10 @@ def main() -> None:
         print('Returning to start...')
 
     # go back to start
-    initial_pose.header.stamp = navigator.get_clock().now().to_msg()
-    go_to_pose_task = navigator.goToPose(initial_pose)
-    while not navigator.isTaskComplete():
-        pass
+    # initial_pose.header.stamp = navigator.get_clock().now().to_msg()
+    # go_to_pose_task = navigator.goToPose(initial_pose)
+    # while not navigator.isTaskComplete():
+    #     pass
 
     exit(0)
 
