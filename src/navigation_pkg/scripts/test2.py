@@ -7,12 +7,8 @@ from nav2_simple_commander.robot_navigator import BasicNavigator, TaskResult
 import rclpy
 from launch.actions import TimerAction
 
-"""
-Basic stock inspection demo. In this demonstration, the expectation
-is that there are cameras or RFID sensors mounted on the robots
-collecting information about stock quantity and location.
-"""
-
+import math
+from tf_transformations import quaternion_from_euler
 
 def main() -> None:
     rclpy.init()
@@ -22,10 +18,10 @@ def main() -> None:
     inspection_route = [
         [0.5, 0.3],
         [2.0, 1.0],
-        [3.0, 0.3],
+        [3.0, 0.7],
     ]
 
-    # Set our demo's initial pose
+    # Set initial pose
     initial_pose = PoseStamped()
     initial_pose.header.frame_id = 'map'
     initial_pose.header.stamp = navigator.get_clock().now().to_msg()
@@ -43,9 +39,27 @@ def main() -> None:
     inspection_pose = PoseStamped()
     inspection_pose.header.frame_id = 'map'
     inspection_pose.header.stamp = navigator.get_clock().now().to_msg()
-    for pt in inspection_route:
+    print('Pose with final heading')
+    for idx, pt in enumerate(inspection_route):
         inspection_pose.pose.position.x = pt[0]
         inspection_pose.pose.position.y = pt[1]
+
+        # Set orientation
+        if idx == len(inspection_route) - 1:
+            # Desired orientation for final waypoint (yaw in radians)
+            desired_yaw = math.radians(0)  # 90 degrees as example
+            q = quaternion_from_euler(0, 0, desired_yaw)
+            inspection_pose.pose.orientation.x = q[0]
+            inspection_pose.pose.orientation.y = q[1]
+            inspection_pose.pose.orientation.z = q[2]
+            inspection_pose.pose.orientation.w = q[3]
+        else:
+            # Keep default orientation for intermediate waypoints
+            inspection_pose.pose.orientation.x = 0.0
+            inspection_pose.pose.orientation.y = 0.0
+            inspection_pose.pose.orientation.z = 0.0
+            inspection_pose.pose.orientation.w = 1.0
+
         inspection_points.append(deepcopy(inspection_pose))
 
     wpf_task = navigator.followWaypoints(inspection_points)
@@ -75,10 +89,10 @@ def main() -> None:
         print('Returning to start...')
 
     # go back to start
-    initial_pose.header.stamp = navigator.get_clock().now().to_msg()
-    go_to_pose_task = navigator.goToPose(initial_pose)
-    while not navigator.isTaskComplete():
-        pass
+    # initial_pose.header.stamp = navigator.get_clock().now().to_msg()
+    # go_to_pose_task = navigator.goToPose(initial_pose)
+    # while not navigator.isTaskComplete():
+    #     pass
 
     exit(0)
 
