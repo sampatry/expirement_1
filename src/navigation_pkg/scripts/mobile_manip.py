@@ -64,7 +64,8 @@ class PickMissionControl(Node):
         self.navigator.waitUntilNav2Active()
 
         # --- B. DEFINE & NAVIGATE ROUTE ---
-        inspection_route = [[0.5, 0.3], [2.0, 1.0], [3.0, 0.3]]
+        # inspection_route = [[0.5, 0.3], [2.0, 1.0], [2.7, 0.8]]
+        inspection_route = [[2.0, 1.0], [2.7, 0.8]]
         inspection_points = []
         
         tmp_pose = PoseStamped()
