@@ -11,13 +11,18 @@ def generate_launch_description():
         get_package_share_directory('navigation_pkg'), 'config', 'my_map.yaml'
     )
 
-    # sim_launch = os.path.join(
-    #     get_package_share_directory('simulation_pkg'), 'launch', 'custom_world.launch.py'
-    # )
+    param_file = os.path.join(
+        get_package_share_directory('navigation_pkg'), 'config', 'turtlebot3.yaml'
+    )
 
     nav2_launch = os.path.join(
         get_package_share_directory('turtlebot3_manipulation_navigation2'),
         'launch', 'navigation2.launch.py'
+    )
+
+    moveit_launch_path = os.path.join(
+        get_package_share_directory('turtlebot3_manipulation_moveit_config'),
+        'launch', 'move_group.launch.py'
     )
 
     return LaunchDescription([
@@ -28,8 +33,16 @@ def generate_launch_description():
             PythonLaunchDescriptionSource(nav2_launch),
             launch_arguments={
                 'map_yaml_file': map_file,
+                'params_file': param_file,
                 'use_sim': 'true',
                 'start_rviz': 'true',
+            }.items()
+        ),
+        # This starts the /move_action server your Python script is looking for
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(moveit_launch_path),
+            launch_arguments={
+                'use_sim_time': 'true',
             }.items()
         ),
     ])

@@ -23,7 +23,7 @@ To start the turblebot in gazebo the experiment 1 map only:
 `ros2 launch simulation_pkg custom_world.launch.py`
 
 To start turtlebot navigation with nav2 run:
-`ros2 launch navigation_pkg nav_manipulation.launch.py`
+`ros2 launch navigation_pkg nav_manipulator.launch.py`
 
 To run scripts run:
 `ros2 run navigation_pkg test1.py`
