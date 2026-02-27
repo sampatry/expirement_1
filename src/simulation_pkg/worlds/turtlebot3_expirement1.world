@@ -35,5 +35,54 @@
       <static>true</static>
     </include>
 
+ <!-- Graspable Cylinder -->
+    <model name="grasp_cylinder">
+      <pose> 2.5 -0.5 0.1 0 0 0</pose>
+      <static>false</static>
+
+      <link name="link">
+
+        <inertial>
+          <mass>0.2</mass>
+          <inertia>
+            <ixx>0.000083</ixx>
+            <iyy>0.000083</iyy>
+            <izz>0.000062</izz>
+          </inertia>
+        </inertial>
+
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.03</radius>
+              <length>0.20</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0 0 1 1</ambient>
+          </material>
+        </visual>
+
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.03</radius>
+              <length>0.20</length>
+            </cylinder>
+          </geometry>
+
+          <surface>
+            <friction>
+              <ode>
+                <mu>10</mu>
+                <mu2>10</mu2>
+              </ode>
+            </friction>
+          </surface>
+
+        </collision>
+
+      </link>
+    </model>
   </world>
 </sdf>
