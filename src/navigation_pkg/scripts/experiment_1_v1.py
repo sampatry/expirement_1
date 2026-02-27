@@ -68,7 +68,7 @@ class TB3FinalMission(Node):
         # Simulation Values for OpenManipulator-X:
         # Open: 0.019 (positive value)
         # Closed: -0.01 (negative value creates the clamping force)
-        joint_con.position = -0.01 if close else 0.019
+        joint_con.position = 0.005 if close else 0.019
         
         joint_con.tolerance_above = 0.0005
         joint_con.tolerance_below = 0.0005
@@ -87,16 +87,16 @@ class TB3FinalMission(Node):
 
         return self.move_group_client.send_goal_async(goal_msg)
 
-    def send_pick_goal(self, offset=0.0):
+    def send_pick_goal(self, x_offset=0.0):
         """Calculates a Cartesian goal and sends it to MoveIt."""
 
-        # Calculation with Offset
-        # reach_distance = LiDAR_Distance + Offset
-        reach_dist = (self.closest_dist + offset)
+        # Offset the compensate for systemic error observed in testing
+        # x_offset is to compensate for the distance between the lidar and manipulator base
+        y_offset = 0.05
 
         # 1. MATH: Convert LiDAR (r, theta) to Cartesian (x, y)
-        x = reach_dist * math.cos(self.closest_angle)
-        y = reach_dist * math.sin(self.closest_angle)
+        x = (self.closest_dist + x_offset) * math.cos(self.closest_angle)
+        y = (self.closest_dist + y_offset) * math.sin(self.closest_angle)
        
         
         # x = (self.closest_dist - 0.04) * math.cos(self.closest_angle)
@@ -145,7 +145,7 @@ class TB3FinalMission(Node):
         init_pose = PoseStamped()
         init_pose.header.frame_id = 'map'
         init_pose.header.stamp = self.get_clock().now().to_msg()
-        init_pose.pose.position.x, init_pose.pose.position.y, init_pose.pose.orientation.w = 0.5, 0.9, 1.0
+        init_pose.pose.position.x, init_pose.pose.position.y, init_pose.pose.orientation.w = 0.55, 0.78, 1.0
         self.navigator.setInitialPose(init_pose)
         self.navigator.waitUntilNav2Active()
 
@@ -172,11 +172,11 @@ class TB3FinalMission(Node):
             time.sleep(2.0)
 
             self.get_logger().info("Lining up arm...")
-            self.send_pick_goal(offset=0.0)
+            self.send_pick_goal(x_offset=0.0)
             time.sleep(5.0) # Wait for reach to finish
 
             self.get_logger().info("Reaching for object...")
-            self.send_pick_goal(offset=0.07)
+            self.send_pick_goal(x_offset=0.09)
             time.sleep(5.0) # Wait for reach to finish
 
             self.get_logger().info("Grasping...")
