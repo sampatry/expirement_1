@@ -26,7 +26,7 @@ To start turtlebot navigation with nav2 run:
 - `ros2 launch navigation_pkg nav_manipulator.launch.py`
 
 To run scripts run:
-- `ros2 run navigation_pkg test1.py`
+- `ros2 run navigation_pkg experiment_1_v1.py`
 
 
 To manually drive the robot use:
