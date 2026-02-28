@@ -68,7 +68,7 @@ class TB3FinalMission(Node):
         # Simulation Values for OpenManipulator-X:
         # Open: 0.019 (positive value)
         # Closed: -0.01 (negative value creates the clamping force)
-        joint_con.position = 0.005 if close else 0.019
+        joint_con.position = 0.000 if close else 0.019
         
         joint_con.tolerance_above = 0.0005
         joint_con.tolerance_below = 0.0005
@@ -87,12 +87,12 @@ class TB3FinalMission(Node):
 
         return self.move_group_client.send_goal_async(goal_msg)
 
-    def send_pick_goal(self, x_offset=0.0):
+    def send_pick_goal(self, x_offset=0.0, y_offset=0.0, z=0.08):
         """Calculates a Cartesian goal and sends it to MoveIt."""
 
         # Offset the compensate for systemic error observed in testing
         # x_offset is to compensate for the distance between the lidar and manipulator base
-        y_offset = 0.05
+        
 
         # 1. MATH: Convert LiDAR (r, theta) to Cartesian (x, y)
         x = (self.closest_dist + x_offset) * math.cos(self.closest_angle)
@@ -101,7 +101,7 @@ class TB3FinalMission(Node):
         
         # x = (self.closest_dist - 0.04) * math.cos(self.closest_angle)
         # y = (self.closest_dist - 0.04) * math.sin(self.closest_angle)
-        z = 0.08  # Meters above arm base
+        # z = 0.08  # Meters above arm base
 
         # 2. POSE: The target point
         target_p = Pose()
@@ -114,7 +114,7 @@ class TB3FinalMission(Node):
         pos_con.link_name = "end_effector_link"  # Standard TB3 link name
         
         box = SolidPrimitive()
-        box.type, box.dimensions = SolidPrimitive.BOX, [0.02, 0.02, 0.02]
+        box.type, box.dimensions = SolidPrimitive.BOX, [0.01, 0.01, 0.01]
         
         pos_con.constraint_region.primitives.append(box)
         pos_con.constraint_region.primitive_poses.append(target_p)
@@ -150,7 +150,7 @@ class TB3FinalMission(Node):
         self.navigator.waitUntilNav2Active()
 
         # II. NAVIGATE ROUTE
-        route = [[2.0, 0.7], [2.6, 0.7]]
+        route = [[2.0, 0.7], [2.6, 0.75]]
         waypoints = []
         for p in route:
             wp = PoseStamped()
@@ -172,11 +172,11 @@ class TB3FinalMission(Node):
             time.sleep(2.0)
 
             self.get_logger().info("Lining up arm...")
-            self.send_pick_goal(x_offset=0.0)
+            self.send_pick_goal(x_offset=0.0, y_offset=-0.05, z=0.15)
             time.sleep(5.0) # Wait for reach to finish
 
             self.get_logger().info("Reaching for object...")
-            self.send_pick_goal(x_offset=0.09)
+            self.send_pick_goal(x_offset=0.15, y_offset=0.0, z=0.08)
             time.sleep(5.0) # Wait for reach to finish
 
             self.get_logger().info("Grasping...")
