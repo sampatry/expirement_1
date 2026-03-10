@@ -12,7 +12,7 @@ def generate_launch_description():
     )
 
     param_file = os.path.join(
-        get_package_share_directory('navigation_pkg'), 'config', 'turtlebot3.yaml'
+        get_package_share_directory('navigation_pkg'), 'config', 'turtlebot.yaml'
     )
 
     nav2_launch = os.path.join(
